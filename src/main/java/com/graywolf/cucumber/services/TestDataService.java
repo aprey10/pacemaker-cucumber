@@ -15,7 +15,7 @@ import java.util.Map;
 public class TestDataService {
 
     @Autowired
-    public BookRepository bookRepository;
+    private BookRepository bookRepository;
 
     public void buildTestData(List<String> titles, int year, String author) {
         bookRepository.clear();
