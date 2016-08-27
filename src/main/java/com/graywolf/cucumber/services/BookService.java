@@ -1,9 +1,10 @@
 package com.graywolf.cucumber.services;
 
 import com.graywolf.cucumber.persistance.Book;
+import com.graywolf.cucumber.persistance.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,9 +14,12 @@ import java.util.stream.Collectors;
 @Service
 public class BookService {
 
-    public List<Book> searchByAuthorAndYear(String author, int year){
-        return Arrays.asList("name1", "name2").stream().map(
-                name -> new Book(name, author, year)
+    @Autowired
+    public BookRepository bookRepository;
+
+    public List<Book> searchByAuthorAndYear(String author, int year) {
+        return bookRepository.getList().stream().filter(book ->
+                book.getAuthor().equals(author) && book.getYear() == year
         ).collect(Collectors.toList());
     }
 

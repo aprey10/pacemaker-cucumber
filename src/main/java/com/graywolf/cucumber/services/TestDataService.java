@@ -1,6 +1,8 @@
 package com.graywolf.cucumber.services;
 
 import com.graywolf.cucumber.persistance.Book;
+import com.graywolf.cucumber.persistance.BookRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,15 +14,28 @@ import java.util.Map;
 @Service
 public class TestDataService {
 
-    public void buildTestData(List<String> names, int year, String author) {
-        //build test data
+    @Autowired
+    public BookRepository bookRepository;
+
+    public void buildTestData(List<String> titles, int year, String author) {
+        bookRepository.clear();
+        titles.stream().forEach(title -> bookRepository.save(
+                new Book().builder()
+                        .title(title)
+                        .author(author)
+                        .year(year).build()));
     }
 
-    public void buildTestData(Map<String, String> names, int year) {
-        //build test data
+    public void buildTestData(Map<String, String> titleAuthorMap, int year) {
+        bookRepository.clear();
+        titleAuthorMap.entrySet().stream().forEach(entry -> bookRepository.save(
+                new Book().builder().title(entry.getKey())
+                        .author(entry.getValue())
+                        .year(year).build()));
     }
 
     public void buildTestData(List<Book> bookList) {
-        //build test data
+        bookRepository.clear();
+        bookRepository.saveList(bookList);
     }
 }

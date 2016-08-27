@@ -35,9 +35,9 @@ public class BookSearchSteps {
     private List<Book> books;
 
 
-    @Given("^we have two books with names \"([^\"]*)\" and \"([^\"]*)\" that were written by \"([^\"]*)\" and published at (\\d+)$")
-    public void given(String name1, String name2, String author, int year) throws Throwable {
-        testDataService.buildTestData(Arrays.asList(name1, name2), year, author);
+    @Given("^we have two books with titles \"([^\"]*)\" and \"([^\"]*)\" that were written by \"([^\"]*)\" and published at (\\d+)$")
+    public void given(String title1, String title2, String author, int year) throws Throwable {
+        testDataService.buildTestData(Arrays.asList(title1, title2), year, author);
     }
 
     @When("^search for book by author \"([^\"]*)\" and year (\\d+)$")
@@ -47,27 +47,28 @@ public class BookSearchSteps {
 
     @Then("^(\\d+) books will be found$")
     public void then(int size) throws Throwable {
-        assertEquals(2, books.size());
+        assertEquals(size, books.size());
     }
 
-    @And("^names of that books will be \"([^\"]*)\" and \"([^\"]*)\"$")
-    public void then(String name1, String name2) throws Throwable {
-        assertTrue(books.stream().map(Book::getName).collect(Collectors.toList()).containsAll(Arrays.asList(name1, name2)));
+    @And("^titles of that books will be \"([^\"]*)\" and \"([^\"]*)\"$")
+    public void then(String title1, String title2) throws Throwable {
+        assertTrue(books.stream().map(Book::getTitle).collect(Collectors.toList()).containsAll(Arrays.asList(title1,
+                title2)));
     }
 
-    @And("^names of that books will be: (.*)$")
-    public void then_list(List<String> bookNames) throws Throwable {
-        assertTrue(books.stream().map(Book::getName).collect(Collectors.toList()).containsAll(bookNames));
+    @And("^titles of that books will be: (.*)$")
+    public void then_list(List<String> booktitles) throws Throwable {
+        assertTrue(books.stream().map(Book::getTitle).collect(Collectors.toList()).containsAll(booktitles));
     }
 
-    @Given("^we have books that were written by \"([^\"]*)\" and published at (\\d+), books names: (.*)$")
-    public void given_list(String author, int year, List<String> bookNames) throws Throwable {
-        testDataService.buildTestData(bookNames, year, author);
+    @Given("^we have books that were written by \"([^\"]*)\" and published at (\\d+), books titles: (.*)$")
+    public void given_list(String author, int year, List<String> bookTitles) throws Throwable {
+        testDataService.buildTestData(bookTitles, year, author);
     }
 
-    @Given("^we have books that were published at (\\d+), books names and authors:$")
-    public void given_map(int year, Map<String, String> bookNames) throws Throwable {
-        testDataService.buildTestData(bookNames, year);
+    @Given("^we have books that were published at (\\d+), books titles and authors:$")
+    public void given_map(int year, Map<String, String> bookTitles) throws Throwable {
+        testDataService.buildTestData(bookTitles, year);
     }
 
     @Given("^we have list of books:$")
